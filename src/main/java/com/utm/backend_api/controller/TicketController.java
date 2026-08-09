@@ -10,11 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Controlador REST para la gestión de tickets del Help Desk.
- * Expone los endpoints CRUD en /api/tickets.
- * @author Fausto Damian Guano Loya
- */
 @RestController
 @RequestMapping("/api/tickets")
 @CrossOrigin(origins = "*")
@@ -23,13 +18,11 @@ public class TicketController {
     @Autowired
     private TicketRepository repo;
 
-    /** GET /api/tickets — Lista todos los tickets */
     @GetMapping
     public List<Ticket> getAll() {
         return repo.findAll();
     }
 
-    /** GET /api/tickets/{id} — Busca un ticket por ID */
     @GetMapping("/{id}")
     public ResponseEntity<Ticket> getById(@PathVariable String id) {
         Optional<Ticket> ticket = repo.findById(id);
@@ -37,14 +30,12 @@ public class TicketController {
                      .orElse(ResponseEntity.notFound().build());
     }
 
-    /** POST /api/tickets — Crea un nuevo ticket */
     @PostMapping
     public ResponseEntity<Ticket> create(@RequestBody Ticket ticket) {
         Ticket saved = repo.save(ticket);
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
-    /** PUT /api/tickets/{id} — Actualiza un ticket existente */
     @PutMapping("/{id}")
     public ResponseEntity<Ticket> update(@PathVariable String id,
                                           @RequestBody Ticket datos) {
@@ -62,7 +53,6 @@ public class TicketController {
         return ResponseEntity.ok(repo.save(ticket));
     }
 
-    /** DELETE /api/tickets/{id} — Elimina un ticket */
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable String id) {
         if (!repo.existsById(id)) {
